@@ -59,11 +59,15 @@ fun TelaDetalhesDespesa(
     navController: NavController
 ) {
 
-    var despesa by remember(id) { mutableStateOf<Despesa?>(null) }
+    var despesa by remember(id) {
+        mutableStateOf(Dados.despesas.firstOrNull { it.id == id })
+    }
+    var carregando by remember(id) { mutableStateOf(true) }
 
     LaunchedEffect(id) {
         Dados.carregarCategorias()
         despesa = Dados.buscarDespesaPorId(id)
+        carregando = false
     }
 
     if (despesa == null) {
@@ -116,7 +120,7 @@ fun TelaDetalhesDespesa(
             ) {
 
                 Text(
-                    text = "Despesa não encontrada",
+                    text = if (carregando) "Carregando despesa..." else "Despesa não encontrada",
                     color = VerdeEscuro,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
