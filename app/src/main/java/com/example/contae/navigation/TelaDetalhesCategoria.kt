@@ -59,7 +59,7 @@ fun TelaDetalhesCategoria(
     navController: NavController
 ) {
 
-    var categoria by remember(id) { mutableStateOf<Categoria?> (null) }
+    var categoria by remember(id) { mutableStateOf<Categoria?>(null) }
 
     LaunchedEffect(id) {
         Dados.carregarDespesas()
@@ -143,9 +143,11 @@ fun TelaDetalhesCategoria(
         return
     }
 
+    val categoriaAtual = categoria ?: return
+
     // Todas as despesas da categoria
     val despesasCategoria = Dados.despesas.filter {
-        it.categoriaId == categoria.id
+        it.categoriaId == categoriaAtual.id
     }
 
     // Soma despesas
@@ -154,11 +156,11 @@ fun TelaDetalhesCategoria(
     }
 
     // Quanto ainda pode gastar
-    val restante = categoria.limite - totalGasto
+    val restante = categoriaAtual.limite - totalGasto
 
     // Porcentagem utilizada
-    val percentual = if (categoria.limite > 0) {
-        (totalGasto / categoria.limite)
+    val percentual = if (categoriaAtual.limite > 0) {
+        (totalGasto / categoriaAtual.limite)
             .coerceIn(0.0, 1.0)
             .toFloat()
     } else {
@@ -168,7 +170,7 @@ fun TelaDetalhesCategoria(
     val percentualTexto = (percentual * 100).toInt()
 
     // Verifica se ultrapassou o limite
-    val limiteUltrapassado = totalGasto > categoria.limite
+    val limiteUltrapassado = totalGasto > categoriaAtual.limite
 
     val corStatus = if (limiteUltrapassado) {
         Color(0xFFE53935)
@@ -276,7 +278,7 @@ fun TelaDetalhesCategoria(
                         Column {
 
                             Text(
-                                text = categoria.nome,
+                                text = categoriaAtual.nome,
                                 color = Branco,
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold
@@ -416,7 +418,7 @@ fun TelaDetalhesCategoria(
                             )
 
                             Text(
-                                text = "R$ %.2f".format(categoria.limite),
+                                text = "R$ %.2f".format(categoriaAtual.limite),
                                 color = VerdeEscuro,
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold
@@ -487,7 +489,7 @@ fun TelaDetalhesCategoria(
 
                         Text(
                             text = if (limiteUltrapassado) {
-                                "Você ultrapassou o limite desta categoria."
+                                "Você ultrapassou o limite desta categoriaAtual."
                             } else {
                                 "Ainda há R$ %.2f disponíveis.".format(restante)
                             },
