@@ -32,6 +32,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,6 +62,9 @@ import com.example.contae.ui.theme.VerdePrincipal
 fun TelaCategorias(
     navController: NavController
 ) {
+    LaunchedEffect(Unit) {
+        Dados.carregarTudo()
+    }
 
     var nome by remember {
         mutableStateOf("")
@@ -257,32 +261,22 @@ fun TelaCategorias(
                                     limiteNumero > 0
                                 ) {
 
-                                    if (categoriaEditandoId == null) {
-
-                                        Dados.categorias.add(
+                                    val id = categoriaEditandoId
+                                    if (id == null) {
+                                        Dados.salvarCategoria(
                                             Categoria(
-                                                id = Dados.proximoIdCategoria(),
                                                 nome = nome.trim(),
                                                 limite = limiteNumero
                                             )
                                         )
-
                                     } else {
-
-                                        val index =
-                                            Dados.categorias.indexOfFirst {
-                                                it.id == categoriaEditandoId
-                                            }
-
-                                        if (index >= 0) {
-
-                                            Dados.categorias[index] =
-                                                Categoria(
-                                                    id = Dados.categorias[index].id,
-                                                    nome = nome.trim(),
-                                                    limite = limiteNumero
-                                                )
-                                        }
+                                        Dados.salvarCategoria(
+                                            Categoria(
+                                                id = id,
+                                                nome = nome.trim(),
+                                                limite = limiteNumero
+                                            )
+                                        )
                                     }
 
                                     nome = ""
@@ -494,9 +488,7 @@ fun TelaCategorias(
                             IconButton(
                                 onClick = {
 
-                                    Dados.categorias.remove(
-                                        categoria
-                                    )
+                                    Dados.deletarCategoria(categoria)
                                 }
                             ) {
 
