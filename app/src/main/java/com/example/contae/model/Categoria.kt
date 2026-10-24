@@ -1,7 +1,12 @@
 package com.example.contae.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "categorias")
 data class Categoria(
-    val id: Int,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val nome: String,
     val limite: Double
 )
