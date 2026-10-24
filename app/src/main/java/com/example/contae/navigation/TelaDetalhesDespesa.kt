@@ -59,7 +59,7 @@ fun TelaDetalhesDespesa(
     navController: NavController
 ) {
 
-    var despesa by remember(id) { mutableStateOf<Despesa?> (null) }
+    var despesa by remember(id) { mutableStateOf<Despesa?>(null) }
 
     LaunchedEffect(id) {
         Dados.carregarCategorias()
@@ -143,8 +143,10 @@ fun TelaDetalhesDespesa(
         return
     }
 
+    val despesaAtual = despesa ?: return
+
     val categoria = Dados.categorias.find {
-        it.id == despesa.categoriaId
+        it.id == despesaAtual.categoriaId
     }
 
     Scaffold(
@@ -243,7 +245,7 @@ fun TelaDetalhesDespesa(
                         Column {
 
                             Text(
-                                text = despesa.descricao,
+                                text = despesaAtual.descricao,
                                 color = Branco,
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold
@@ -270,7 +272,7 @@ fun TelaDetalhesDespesa(
                     Text(
                         text =
                             "R$ %.2f"
-                                .format(despesa.valor),
+                                .format(despesaAtual.valor),
 
                         color = Branco,
 
@@ -351,7 +353,7 @@ fun TelaDetalhesDespesa(
                         )
 
                         Text(
-                            text = despesa.data,
+                            text = despesaAtual.data,
                             color = VerdeEscuro,
                             fontWeight = FontWeight.Bold
                         )
@@ -374,7 +376,7 @@ fun TelaDetalhesDespesa(
                         )
 
                         Text(
-                            text = despesa.id.toString(),
+                            text = despesaAtual.id.toString(),
                             color = VerdeEscuro,
                             fontWeight = FontWeight.Bold
                         )
