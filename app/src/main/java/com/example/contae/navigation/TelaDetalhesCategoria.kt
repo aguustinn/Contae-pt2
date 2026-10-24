@@ -59,11 +59,15 @@ fun TelaDetalhesCategoria(
     navController: NavController
 ) {
 
-    var categoria by remember(id) { mutableStateOf<Categoria?>(null) }
+    var categoria by remember(id) {
+        mutableStateOf(Dados.categorias.firstOrNull { it.id == id })
+    }
+    var carregando by remember(id) { mutableStateOf(true) }
 
     LaunchedEffect(id) {
         Dados.carregarDespesas()
         categoria = Dados.buscarCategoriaPorId(id)
+        carregando = false
     }
 
     //se a cat nao existir
@@ -110,7 +114,7 @@ fun TelaDetalhesCategoria(
             ) {
 
                 Text(
-                    text = "Categoria não encontrada",
+                    text = if (carregando) "Carregando categoria..." else "Categoria não encontrada",
                     color = VerdeEscuro,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
@@ -121,7 +125,7 @@ fun TelaDetalhesCategoria(
                 )
 
                 Text(
-                    text = "Esta categoria não existe mais.",
+                    text = if (carregando) "Buscando os dados no banco local." else "Esta categoria não existe mais.",
                     color = Cinza,
                     fontSize = 14.sp
                 )
