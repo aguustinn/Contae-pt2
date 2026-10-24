@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -47,6 +48,12 @@ dependencies {
 
     implementation("androidx.navigation:navigation-compose:2.10.2")
     implementation("androidx.compose.material:material-icons-extended")
+
+    // Banco SQLite local com Room e coroutines para operações assíncronas.
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.kotlinx.coroutines.android)
+    ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
