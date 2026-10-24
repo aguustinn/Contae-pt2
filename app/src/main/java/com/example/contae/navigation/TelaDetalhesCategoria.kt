@@ -29,6 +29,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.contae.data.Dados
+import com.example.contae.model.Categoria
 import com.example.contae.ui.theme.Branco
 import com.example.contae.ui.theme.CardVerde
 import com.example.contae.ui.theme.Cinza
@@ -53,8 +59,11 @@ fun TelaDetalhesCategoria(
     navController: NavController
 ) {
 
-    val categoria = Dados.categorias.find {
-        it.id == id
+    var categoria by remember(id) { mutableStateOf<Categoria?> (null) }
+
+    LaunchedEffect(id) {
+        Dados.carregarDespesas()
+        categoria = Dados.buscarCategoriaPorId(id)
     }
 
     //se a cat nao existir
