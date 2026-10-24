@@ -49,7 +49,8 @@ As operações de banco são executadas em `Dispatchers.IO`. As exceções são 
 1. Abra o projeto no Android Studio.
 2. Use JDK 17 ou a versão exigida pela instalação do Android Studio e pelo Gradle do projeto.
 3. Aguarde a sincronização do Gradle (o plugin KSP precisa estar configurado antes de usar `ksp(room-compiler)`).
-4. Execute o módulo `app) em um emulador ou aparelho Android.
+4. Selecione a configuração `app` no Android Studio e execute em um emulador ou aparelho Android.
+5. Para validar a compilação pela linha de comando, execute `./gradlew assembleDebug` (Windows: `gradlew.bat assembleDebug`).
 
 O banco é local e o arquivo SQLite é administrado pelo app. Não há servidor, API ou sincronização em nuvem.
 
