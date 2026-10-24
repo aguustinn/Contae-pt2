@@ -33,6 +33,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,6 +60,9 @@ import com.example.contae.ui.theme.VerdePrincipal
 
 @Composable
 fun TelaDespesas(navController: NavController) {
+    LaunchedEffect(Unit) {
+        Dados.carregarTudo()
+    }
 
     var descricao by remember {
         mutableStateOf("")
@@ -340,36 +344,26 @@ fun TelaDespesas(navController: NavController) {
                                     data.isNotBlank()
                                 ) {
 
-                                    if (despesaEditandoId == null) {
-
-                                        Dados.despesas.add(
+                                    val id = despesaEditandoId
+                                    if (id == null) {
+                                        Dados.salvarDespesa(
                                             Despesa(
-                                                id = Dados.proximoIdDespesa(),
                                                 descricao = descricao.trim(),
                                                 valor = valorNumero,
                                                 categoriaId = categoriaId,
                                                 data = data.trim()
                                             )
                                         )
-
                                     } else {
-
-                                        val index =
-                                            Dados.despesas.indexOfFirst {
-                                                it.id == despesaEditandoId
-                                            }
-
-                                        if (index >= 0) {
-
-                                            Dados.despesas[index] =
-                                                Despesa(
-                                                    id = Dados.despesas[index].id,
-                                                    descricao = descricao.trim(),
-                                                    valor = valorNumero,
-                                                    categoriaId = categoriaId,
-                                                    data = data.trim()
-                                                )
-                                        }
+                                        Dados.salvarDespesa(
+                                            Despesa(
+                                                id = id,
+                                                descricao = descricao.trim(),
+                                                valor = valorNumero,
+                                                categoriaId = categoriaId,
+                                                data = data.trim()
+                                            )
+                                        )
                                     }
 
                                     descricao = ""
@@ -708,9 +702,7 @@ fun TelaDespesas(navController: NavController) {
                                     IconButton(
                                         onClick = {
 
-                                            Dados.despesas.remove(
-                                                despesa
-                                            )
+                                            Dados.deletarDespesa(despesa)
                                         }
                                     ) {
 
